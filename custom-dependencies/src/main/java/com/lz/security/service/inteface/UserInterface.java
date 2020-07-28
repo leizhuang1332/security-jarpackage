@@ -1,6 +1,6 @@
 package com.lz.security.service.inteface;
 
-import com.lz.security.entity.UserEntityInterface;
+import com.lz.security.entity.inteface.UserEntityInterface;
 
 public interface UserInterface {
 

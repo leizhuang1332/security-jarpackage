@@ -1,8 +1,8 @@
 package com.lz.security.certificate.identity;
 
 import com.lz.security.AuthenticationAdapter;
-import com.lz.security.entity.RoleEntityInterface;
-import com.lz.security.entity.UserEntityInterface;
+import com.lz.security.entity.inteface.RoleEntityInterface;
+import com.lz.security.entity.inteface.UserEntityInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

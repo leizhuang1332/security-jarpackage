@@ -1,6 +1,6 @@
 package com.lz.security.service.inteface;
 
-import com.lz.security.entity.RolePermissionEntityInterface;
+import com.lz.security.entity.inteface.RolePermissionEntityInterface;
 
 import java.util.List;
 

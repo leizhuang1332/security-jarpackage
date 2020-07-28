@@ -1,4 +1,4 @@
-package com.lz.security.entity;
+package com.lz.security.entity.inteface;
 
 public interface RoleEntityInterface {
 

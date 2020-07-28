@@ -1,6 +1,6 @@
 package com.lz.security.service.inteface;
 
-import com.lz.security.entity.RoleEntityInterface;
+import com.lz.security.entity.inteface.RoleEntityInterface;
 
 import java.util.List;
 

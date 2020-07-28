@@ -1,6 +1,6 @@
 package com.lz.entity;
 
-import com.lz.security.entity.UserEntityInterface;
+import com.lz.security.entity.inteface.UserEntityInterface;
 import lombok.Data;
 
 @Data

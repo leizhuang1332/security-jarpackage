@@ -1,6 +1,6 @@
 package com.lz.entity;
 
-import com.lz.security.entity.RolePermissionEntityInterface;
+import com.lz.security.entity.inteface.RolePermissionEntityInterface;
 import lombok.Data;
 
 @Data
