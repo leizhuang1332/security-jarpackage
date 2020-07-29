@@ -1,8 +1,6 @@
 package com.lz.security.certificate.authority;
 
 import com.lz.security.Bootstrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.security.web.FilterInvocation;
@@ -20,8 +18,6 @@ import java.util.Map;
  */
 @Component
 public class CustomSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
-
-    private Logger log = LoggerFactory.getLogger(CustomSecurityMetadataSource.class);
 
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {

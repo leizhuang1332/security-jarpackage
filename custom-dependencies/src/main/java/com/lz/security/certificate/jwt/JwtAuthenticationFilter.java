@@ -5,13 +5,13 @@ import com.lz.security.certificate.identity.CustomUserDetails;
 import com.lz.security.certificate.identity.GeneralAuthenticationToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String getJwtToken(HttpServletRequest request) {
         String authInfo = request.getHeader("Authorization");
-        return StringUtils.removeStart(authInfo, "Bearer ");
+        return authInfo.replace("Bearer ", "");
     }
 
     @Override
@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
             //从头中获取token并封装后提交给AuthenticationManager
             String token = getJwtToken(request);
-            if (StringUtils.isNotBlank(token)) {
+            if (!StringUtils.isEmpty(token)) {
                 Claims claimsFromToken;
                 try {
                     claimsFromToken = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey());
