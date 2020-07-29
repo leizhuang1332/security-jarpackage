@@ -2,9 +2,11 @@ package com.lz.security.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@ConfigurationProperties(prefix = "spring.datasource")
+@ConfigurationProperties(prefix = "security.datasource")
+@PropertySource("classpath:security.properties")
 public class DatasourceProperty {
 
     private String driverClassName;

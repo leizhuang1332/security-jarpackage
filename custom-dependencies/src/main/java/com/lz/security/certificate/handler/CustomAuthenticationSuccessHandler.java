@@ -34,7 +34,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             jwtSubject.setCredentials(userDetails.getUsername());
             userDetails.getAuthorities().forEach(grantedAuthority -> jwtSubject.getRoles().add(grantedAuthority.getAuthority()));
 
-            token = JwtUtils.generateTokenExpireInMinutes(jwtSubject, RsaUtils.getPrivateKey(), 1);
+            token = JwtUtils.generateTokenExpireInMinutes(jwtSubject, RsaUtils.getPrivateKey(), 60 * 24 * 7);
         } catch (Exception e) {
             log.info("TOKEN 生成失败", e);
         }

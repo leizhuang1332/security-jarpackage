@@ -49,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //从头中获取token并封装后提交给AuthenticationManager
             String token = getJwtToken(request);
             if (StringUtils.isNotBlank(token)) {
-                Claims claimsFromToken = null;
+                Claims claimsFromToken;
                 try {
                     claimsFromToken = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey());
                 } catch (ExpiredJwtException e) {
@@ -70,6 +70,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     GeneralAuthenticationToken authentication = new GeneralAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
+            } else {
+                throw new AuthenticationServiceException("The request header needs to contain 'Authorization' information");
             }
         } catch (AuthenticationException e) {
             unsuccessfulAuthentication(request, response, e);

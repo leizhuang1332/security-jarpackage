@@ -5,7 +5,7 @@ import com.lz.security.entity.inteface.RoleEntityInterface;
 public class RoleEntity implements RoleEntityInterface {
 
     private Long id;
-    private Long parent_id;
+    private Long parentId;
     private String name;
     private String enname;
     private String description;
@@ -20,12 +20,12 @@ public class RoleEntity implements RoleEntityInterface {
         this.id = id;
     }
 
-    public Long getParent_id() {
-        return parent_id;
+    public Long getParenId() {
+        return parentId;
     }
 
-    public void setParent_id(Long parent_id) {
-        this.parent_id = parent_id;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class RoleEntity implements RoleEntityInterface {
     public String toString() {
         return "RoleEntity{" +
                 "id=" + id +
-                ", parent_id=" + parent_id +
+                ", parentId=" + parentId +
                 ", name='" + name + '\'' +
                 ", enname='" + enname + '\'' +
                 ", description='" + description + '\'' +
