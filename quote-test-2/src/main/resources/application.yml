@@ -2,7 +2,7 @@ spring:
   #MySQL
   datasource:
       driver-class-name: com.mysql.jdbc.Driver
-      jdbc-url: jdbc:mysql://10.0.254.112:3306/simulated_control_teaching?serverTimezone=GMT%2B8&useUnicode=true&amp&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true
+      url: jdbc:mysql://10.0.254.112:3306/simulated_control_teaching?serverTimezone=GMT%2B8&useUnicode=true&amp&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true
       username: root
       password: 1qaz2wsx
       type: com.alibaba.druid.pool.DruidDataSource

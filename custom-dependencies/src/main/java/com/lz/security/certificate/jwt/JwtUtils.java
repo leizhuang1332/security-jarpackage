@@ -1,10 +1,10 @@
 package com.lz.security.certificate.jwt;
 
+import com.lz.security.util.CalendarUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.joda.time.DateTime;
 
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -22,10 +22,11 @@ public class JwtUtils {
      * @return JWT
      */
     public static String generateTokenExpireInMinutes(Object userInfo, PrivateKey privateKey, int expire) {
+
         return Jwts.builder()
                 .claim(Claims.SUBJECT, userInfo)
                 .setId(createJTI())
-                .setExpiration(DateTime.now().plusMinutes(expire).toDate())
+                .setExpiration(CalendarUtils.plusMinutes(expire))
                 .signWith(SignatureAlgorithm.RS256, privateKey)
                 .compact();
     }
@@ -42,7 +43,7 @@ public class JwtUtils {
         return Jwts.builder()
                 .claim(Claims.SUBJECT, userInfo)
                 .setId(createJTI())
-                .setExpiration(DateTime.now().plusSeconds(expire).toDate())
+                .setExpiration(CalendarUtils.plusSeconds(expire))
                 .signWith(SignatureAlgorithm.RS256, privateKey)
                 .compact();
     }
