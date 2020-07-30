@@ -1,6 +1,6 @@
 package com.lz.security.entity.inteface;
 
-public interface UserEntityInterface {
+public interface UserSecurityEntityInterface {
 
     Long getId();
 

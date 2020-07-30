@@ -1,10 +1,10 @@
 package com.lz.entity;
 
-import com.lz.security.entity.inteface.UserEntityInterface;
+import com.lz.security.entity.inteface.UserSecurityEntityInterface;
 import lombok.Data;
 
 @Data
-public class UserEntity implements UserEntityInterface {
+public class UserSecurityEntity implements UserSecurityEntityInterface {
 
     private Long id;
     private String username;

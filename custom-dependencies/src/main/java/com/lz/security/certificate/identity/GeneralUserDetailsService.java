@@ -2,7 +2,7 @@ package com.lz.security.certificate.identity;
 
 import com.lz.security.AuthenticationAdapter;
 import com.lz.security.entity.inteface.RoleEntityInterface;
-import com.lz.security.entity.inteface.UserEntityInterface;
+import com.lz.security.entity.inteface.UserSecurityEntityInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class GeneralUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String credentials) throws UsernameNotFoundException {
         log.info("登陆凭证 --- {}", credentials);
-        UserEntityInterface user = null;
+        UserSecurityEntityInterface user = null;
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         String[] credential = credentials.split("::");
         switch (credential[0]) {

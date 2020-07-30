@@ -1,8 +1,8 @@
 package com.lz.security.entity;
 
-import com.lz.security.entity.inteface.UserEntityInterface;
+import com.lz.security.entity.inteface.UserSecurityEntityInterface;
 
-public class UserEntity implements UserEntityInterface {
+public class UserSecurityEntity implements UserSecurityEntityInterface {
 
     private Long id;
     private String username;
