@@ -15,12 +15,6 @@ public class DBConfig {
     @javax.annotation.Resource
     private DatasourceProperty datasourceProperty;
 
-//    @Bean(name = "securityDataSource")
-//    public DataSource securityDataSource() throws Exception {
-//        Map<Object, Object> objectObjectMap = BeanMapUtils.beanToMap(datasourceProperty);
-//        return DruidDataSourceFactory.createDataSource(objectObjectMap);
-//    }
-
     @Bean(name = "jdbcTemplate")
     public JdbcTemplate jdbcTemplate() throws Exception {
         Map<Object, Object> objectObjectMap = BeanMapUtils.beanToMap(datasourceProperty);
