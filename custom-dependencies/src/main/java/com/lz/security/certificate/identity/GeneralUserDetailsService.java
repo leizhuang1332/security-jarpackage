@@ -41,7 +41,7 @@ public class GeneralUserDetailsService implements UserDetailsService {
 
                 break;
             case "wechatLogin":
-
+                user = AuthenticationAdapter.getInstance().getUserService().getByOpenid(credential[1]);
                 break;
             default:
         }
@@ -61,6 +61,6 @@ public class GeneralUserDetailsService implements UserDetailsService {
             userDetails.setLoginType(credential[0]);
             return userDetails;
         }
-        throw new UsernameNotFoundException(credential[1]);
+        throw new UsernameNotFoundException("User [" + credential[1] + "] identity is abnormal, please check and try again! ");
     }
 }

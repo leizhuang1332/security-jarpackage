@@ -9,6 +9,7 @@ public class UserSecurityEntity implements UserSecurityEntityInterface {
     private String password;
     private String phone;
     private String email;
+    private String openid;
     private String created;
     private String updated;
 
@@ -55,6 +56,14 @@ public class UserSecurityEntity implements UserSecurityEntityInterface {
         this.email = email;
     }
 
+    public String getOpenid() {
+        return openid;
+    }
+
+    public void setOpenid(String openid) {
+        this.openid = openid;
+    }
+
     public String getCreated() {
         return created;
     }
@@ -73,12 +82,13 @@ public class UserSecurityEntity implements UserSecurityEntityInterface {
 
     @Override
     public String toString() {
-        return "UserEntity{" +
+        return "UserSecurityEntity{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
+                ", openid='" + openid + '\'' +
                 ", created='" + created + '\'' +
                 ", updated='" + updated + '\'' +
                 '}';

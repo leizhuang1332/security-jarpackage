@@ -1,6 +1,7 @@
 package com.lz.security.service;
 
 import com.lz.security.entity.UserSecurityEntity;
+import com.lz.security.entity.inteface.UserSecurityEntityInterface;
 import com.lz.security.service.inteface.UserSecurityInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -25,6 +26,16 @@ public class UserSecurityService implements UserSecurityInterface {
         String sql = "SELECT * FROM tb_user WHERE username = ? ";
 
         List<UserSecurityEntity> query = jdbcTemplate.query(sql, new Object[]{username}, new UserRowMapper());
+
+        return query.isEmpty() ? null : query.get(0);
+    }
+
+    @Override
+    public UserSecurityEntityInterface getByOpenid(String openid) {
+        String sql = "SELECT * FROM tb_user WHERE openid = ? ";
+
+
+        List<UserSecurityEntity> query = jdbcTemplate.query(sql, new Object[]{openid}, new UserRowMapper());
 
         return query.isEmpty() ? null : query.get(0);
     }

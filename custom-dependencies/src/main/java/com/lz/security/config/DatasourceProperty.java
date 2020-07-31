@@ -1,5 +1,6 @@
 package com.lz.security.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -14,6 +15,8 @@ public class DatasourceProperty {
     private String username;
     private String password;
     private String type;
+    public static String websiteAppid;
+    public static String websiteSecret;
 
     public String getDriverClassName() {
         return driverClassName;
@@ -53,5 +56,23 @@ public class DatasourceProperty {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getWebsiteAppid() {
+        return websiteAppid;
+    }
+
+    @Value("${security.datasource.website.appid}")
+    public void setWebsiteAppid(String websiteAppid) {
+        DatasourceProperty.websiteAppid = websiteAppid;
+    }
+
+    public String getWebsiteSecret() {
+        return websiteSecret;
+    }
+
+    @Value("${security.datasource.website.secret}")
+    public void setWebsiteSecret(String websiteSecret) {
+        DatasourceProperty.websiteSecret = websiteSecret;
     }
 }

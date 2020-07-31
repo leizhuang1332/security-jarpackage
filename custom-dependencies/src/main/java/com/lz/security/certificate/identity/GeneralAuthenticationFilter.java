@@ -1,6 +1,11 @@
 package com.lz.security.certificate.identity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lz.security.config.DatasourceProperty;
+import com.lz.security.util.HttpUtils;
+import org.springframework.boot.json.GsonJsonParser;
+import org.springframework.boot.json.JacksonJsonParser;
+import org.springframework.boot.json.JsonParser;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +26,7 @@ public class GeneralAuthenticationFilter extends AbstractAuthenticationProcessin
     public static final String SPRING_SECURITY_FORM_LOGINTYPE_KEY = "loginType";
     public static final String SPRING_SECURITY_FORM_USERNAME_KEY = "username";
     public static final String SPRING_SECURITY_FORM_PASSWORD_KEY = "password";
+    public static final String SPRING_SECURITY_CODE_KEY = "code";
     private boolean postOnly = true;
 
     public GeneralAuthenticationFilter() {
@@ -50,7 +56,38 @@ public class GeneralAuthenticationFilter extends AbstractAuthenticationProcessin
                 break;
             case "wechatLogin":
 
-                break;
+//                "openid" -> "oV775s2YuoHXBUKa8sVe5XcziO34"
+
+//                String code = obtainParam(request, SPRING_SECURITY_CODE_KEY).toString().trim();
+//
+//                String url1 = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + DatasourceProperty.websiteAppid +
+//                        "&secret=" + DatasourceProperty.websiteSecret +
+//                        "&code=" + code +
+//                        "&grant_type=authorization_code";
+//
+//
+//                String oauth2Result = HttpUtils.getInstance().getForm(url1);
+//
+//                JsonParser jsonParser = new JacksonJsonParser();
+//                Map<String, Object> oauth2ResultMap = jsonParser.parseMap(oauth2Result);
+//
+//                String url2 = "https://api.weixin.qq.com/sns/userinfo?access_token=" + oauth2ResultMap.get("access_token") +
+//                        "&openid=" + oauth2ResultMap.get("openid");
+//
+//                String userInfo = HttpUtils.getInstance().getForm(url2);
+//                Map<String, Object> userInfoMap = jsonParser.parseMap(userInfo);
+
+//                GeneralAuthenticationToken wechatLoginAuthRequest = new GeneralAuthenticationToken(userInfoMap.get("openid"), "");
+
+
+
+                GeneralAuthenticationToken wechatLoginAuthRequest = new GeneralAuthenticationToken("oV775s2YuoHXBUKa8sVe5XcziO34", "");
+
+                wechatLoginAuthRequest.setLoginType("wechatLogin");
+
+                setDetails(request, wechatLoginAuthRequest);
+
+                return this.getAuthenticationManager().authenticate(wechatLoginAuthRequest);
             case "":
                 throw new AuthenticationServiceException(
                         "The parameter 'loginType' must be specified!");
