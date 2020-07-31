@@ -3,6 +3,7 @@ package com.lz.security.certificate.jwt;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lz.security.certificate.identity.CustomUserDetails;
 import com.lz.security.certificate.identity.GeneralAuthenticationToken;
+import com.lz.security.util.BeanMapUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -59,13 +60,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
                 if (claimsFromToken != null) {
                     Map SUBJECT = (Map) claimsFromToken.get(Claims.SUBJECT);
-                    Object username = SUBJECT.get("credentials");
-                    Object loginType = SUBJECT.get("loginType");
-                    List<String> roles = (List<String>) SUBJECT.get("roles");
-                    List<GrantedAuthority> grantedAuthorities = roles.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-
-                    CustomUserDetails userDetails = new CustomUserDetails(username + "", "", grantedAuthorities);
-                    userDetails.setLoginType(loginType + "");
+                    JwtSubject jwtSubject;
+                    try {
+                        jwtSubject = BeanMapUtils.mapToBean(SUBJECT, JwtSubject.class);
+                        System.out.println(jwtSubject);
+                    } catch (Exception e) {
+                        throw new AuthenticationServiceException(e.getMessage());
+                    }
+                    List<GrantedAuthority> grantedAuthorities = jwtSubject.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+                    CustomUserDetails userDetails = new CustomUserDetails(jwtSubject.getCredentials(), "", grantedAuthorities);
+                    userDetails.setLoginType(jwtSubject.getLoginType());
 
                     GeneralAuthenticationToken authentication = new GeneralAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                     SecurityContextHolder.getContext().setAuthentication(authentication);
