@@ -1,5 +1,6 @@
 package com.lz.config;
 
+import com.lz.security.common.LoginHandler;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -20,4 +21,14 @@ public class MybatisConfig {
 //    public DataSource dataSource() {
 //        return DataSourceBuilder.create().build();
 //    }
+
+    @Bean
+    public LoginHandler wechatLoginHandler(){
+        return new LoginHandler() {
+            @Override
+            public void handler(Object userInfo) {
+                System.out.println("处理微信登录");
+            }
+        };
+    }
 }

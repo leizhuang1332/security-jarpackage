@@ -29,22 +29,25 @@ public class GeneralUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String credentials) throws UsernameNotFoundException {
         log.info("登陆凭证 --- {}", credentials);
-        UserSecurityEntityInterface user = null;
+        UserSecurityEntityInterface user;
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         String[] credential = credentials.split("::");
         switch (credential[0]) {
             case "formLogin":
                 // 1.查询用户信息
                 user = AuthenticationAdapter.getInstance().getUserService().getByUsername(credential[1]);
-                break;
+                return buildUserDetails(user, grantedAuthorities, credential, "formLogin");
             case "verifyCode":
 
                 break;
             case "wechatLogin":
                 user = AuthenticationAdapter.getInstance().getUserService().getByOpenid(credential[1]);
-                break;
-            default:
+                return buildUserDetails(user, grantedAuthorities, credential, "wechatLogin");
         }
+        throw new UsernameNotFoundException("User [" + credential[1] + "] identity is abnormal, please check and try again! ");
+    }
+
+    private CustomUserDetails buildUserDetails(UserSecurityEntityInterface user, List<GrantedAuthority> grantedAuthorities, String[] credential, String loginType) {
         if (user != null) {
             // 2.获取用户角色
             List<? extends RoleEntityInterface> roles = AuthenticationAdapter.getInstance().getRoleService().getByUserId(user.getId());
@@ -57,10 +60,10 @@ public class GeneralUserDetailsService implements UserDetailsService {
                 }
             });
             // 由框架完成认证工作
-            CustomUserDetails userDetails = new CustomUserDetails(user.getUsername(), passwordEncoder.encode(user.getPassword()), grantedAuthorities);
+            CustomUserDetails userDetails = new CustomUserDetails(credential[1], loginType.equals("formLogin") ? passwordEncoder.encode(user.getPassword()) : "", grantedAuthorities);
             userDetails.setLoginType(credential[0]);
             return userDetails;
         }
-        throw new UsernameNotFoundException("User [" + credential[1] + "] identity is abnormal, please check and try again! ");
+        throw new UsernameNotFoundException("User [" + credential[1] + "] No roles are bound, please contact your administrator! ");
     }
 }

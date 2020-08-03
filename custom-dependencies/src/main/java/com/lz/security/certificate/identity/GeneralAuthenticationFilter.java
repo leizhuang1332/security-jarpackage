@@ -1,9 +1,11 @@
 package com.lz.security.certificate.identity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lz.security.common.LoginHandler;
+import com.lz.security.common.UserMetadata;
 import com.lz.security.config.DatasourceProperty;
 import com.lz.security.util.HttpUtils;
-import org.springframework.boot.json.GsonJsonParser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.http.MediaType;
@@ -13,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -21,7 +24,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
+@Component
 public class GeneralAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+
+    @Autowired
+    private LoginHandler wechatLoginHandler;
 
     public static final String SPRING_SECURITY_FORM_LOGINTYPE_KEY = "loginType";
     public static final String SPRING_SECURITY_FORM_USERNAME_KEY = "username";
@@ -58,30 +65,31 @@ public class GeneralAuthenticationFilter extends AbstractAuthenticationProcessin
 
 //                "openid" -> "oV775s2YuoHXBUKa8sVe5XcziO34"
 
-//                String code = obtainParam(request, SPRING_SECURITY_CODE_KEY).toString().trim();
-//
-//                String url1 = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + DatasourceProperty.websiteAppid +
-//                        "&secret=" + DatasourceProperty.websiteSecret +
-//                        "&code=" + code +
-//                        "&grant_type=authorization_code";
-//
-//
-//                String oauth2Result = HttpUtils.getInstance().getForm(url1);
-//
-//                JsonParser jsonParser = new JacksonJsonParser();
-//                Map<String, Object> oauth2ResultMap = jsonParser.parseMap(oauth2Result);
-//
-//                String url2 = "https://api.weixin.qq.com/sns/userinfo?access_token=" + oauth2ResultMap.get("access_token") +
-//                        "&openid=" + oauth2ResultMap.get("openid");
-//
-//                String userInfo = HttpUtils.getInstance().getForm(url2);
-//                Map<String, Object> userInfoMap = jsonParser.parseMap(userInfo);
+                String code = obtainParam(request, SPRING_SECURITY_CODE_KEY).toString().trim();
 
-//                GeneralAuthenticationToken wechatLoginAuthRequest = new GeneralAuthenticationToken(userInfoMap.get("openid"), "");
+                String url1 = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=" + DatasourceProperty.websiteAppid +
+                        "&secret=" + DatasourceProperty.websiteSecret +
+                        "&code=" + code +
+                        "&grant_type=authorization_code";
 
+                String oauth2Result = HttpUtils.getInstance().getForm(url1);
 
+                JsonParser jsonParser = new JacksonJsonParser();
+                Map<String, Object> oauth2ResultMap = jsonParser.parseMap(oauth2Result);
 
-                GeneralAuthenticationToken wechatLoginAuthRequest = new GeneralAuthenticationToken("oV775s2YuoHXBUKa8sVe5XcziO34", "");
+                String url2 = "https://api.weixin.qq.com/sns/userinfo?access_token=" + oauth2ResultMap.get("access_token") +
+                        "&openid=" + oauth2ResultMap.get("openid");
+
+                String userInfo = HttpUtils.getInstance().getForm(url2);
+                Map<String, Object> userInfoMap = jsonParser.parseMap(userInfo);
+
+                UserMetadata.wechatUserInfo.put(userInfoMap.get("openid"), userInfoMap);
+
+                wechatLoginHandler.handler(userInfoMap);
+
+                GeneralAuthenticationToken wechatLoginAuthRequest = new GeneralAuthenticationToken(userInfoMap.get("openid"), "");
+
+//                GeneralAuthenticationToken wechatLoginAuthRequest = new GeneralAuthenticationToken("oV775s2YuoHXBUKa8sVe5XcziO34", "");
 
                 wechatLoginAuthRequest.setLoginType("wechatLogin");
 
