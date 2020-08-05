@@ -6,9 +6,12 @@ import com.lz.security.certificate.identity.GeneralAuthenticationToken;
 import com.lz.security.util.BeanMapUtils;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.util.matcher.RequestHeaderRequestMatcher;
@@ -21,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,38 +48,41 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            if (!requiresAuthentication(request)) {
-                throw new AuthenticationServiceException("The request header needs to contain 'Authorization' information");
-            }
-            //从头中获取token并封装后提交给AuthenticationManager
-            String token = getJwtToken(request);
-            if (!StringUtils.isEmpty(token)) {
-                Claims claimsFromToken;
-                try {
-                    claimsFromToken = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey());
-                } catch (ExpiredJwtException e) {
-                    throw new AuthenticationServiceException("The certification is invalid");
-                } catch (Exception e) {
-                    throw new AuthenticationServiceException(e.getMessage());
-                }
-                if (claimsFromToken != null) {
-                    Map SUBJECT = (Map) claimsFromToken.get(Claims.SUBJECT);
-                    JwtSubject jwtSubject;
+            if (requiresAuthentication(request)) {
+//                throw new AuthenticationServiceException("The request header needs to contain 'Authorization' information");
+                //从请求头中获取token并封装后提交给AuthenticationManager
+                String token = getJwtToken(request);
+                if (!StringUtils.isEmpty(token)) {
+                    Claims claimsFromToken;
                     try {
-                        jwtSubject = BeanMapUtils.mapToBean(SUBJECT, JwtSubject.class);
-                        System.out.println(jwtSubject);
+                        claimsFromToken = JwtUtils.getInfoFromToken(token, RsaUtils.getPublicKey());
+                    } catch (ExpiredJwtException e) {
+                        throw new AuthenticationServiceException("The certification is invalid");
                     } catch (Exception e) {
                         throw new AuthenticationServiceException(e.getMessage());
                     }
-                    List<GrantedAuthority> grantedAuthorities = jwtSubject.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-                    CustomUserDetails userDetails = new CustomUserDetails(jwtSubject.getCredentials(), "", grantedAuthorities);
-                    userDetails.setLoginType(jwtSubject.getLoginType());
+                    if (claimsFromToken != null) {
+                        Map SUBJECT = (Map) claimsFromToken.get(Claims.SUBJECT);
+                        JwtSubject jwtSubject;
+                        try {
+                            jwtSubject = BeanMapUtils.mapToBean(SUBJECT, JwtSubject.class);
+                            System.out.println(jwtSubject);
+                        } catch (Exception e) {
+                            throw new AuthenticationServiceException(e.getMessage());
+                        }
+                        List<GrantedAuthority> grantedAuthorities = jwtSubject.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+                        CustomUserDetails userDetails = new CustomUserDetails(jwtSubject.getCredentials(), "", grantedAuthorities);
+                        userDetails.setLoginType(jwtSubject.getLoginType());
 
-                    GeneralAuthenticationToken authentication = new GeneralAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                        GeneralAuthenticationToken authentication = new GeneralAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
+                } else {
+                    throw new AuthenticationServiceException("The request header needs to contain 'Authorization' information");
                 }
             } else {
-                throw new AuthenticationServiceException("The request header needs to contain 'Authorization' information");
+                SecurityContextHolder.getContext().setAuthentication(new AnonymousAuthenticationToken("anonymousUser", "anonymousUser",
+                        AuthorityUtils.createAuthorityList("anonymousUser")));
             }
         } catch (AuthenticationException e) {
             unsuccessfulAuthentication(request, response, e);

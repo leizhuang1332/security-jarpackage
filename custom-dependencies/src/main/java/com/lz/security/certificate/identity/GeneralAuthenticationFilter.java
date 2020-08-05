@@ -10,12 +10,14 @@ import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationServiceException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -51,6 +53,10 @@ public class GeneralAuthenticationFilter extends AbstractAuthenticationProcessin
             case "formLogin":
                 String username = obtainParam(request, SPRING_SECURITY_FORM_USERNAME_KEY).toString().trim();
                 String password = obtainParam(request, SPRING_SECURITY_FORM_PASSWORD_KEY).toString().trim();
+
+                if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
+                    throw new BadCredentialsException("The username or password cannot be empty");
+                }
 
                 GeneralAuthenticationToken authRequest = new GeneralAuthenticationToken(username, password);
                 authRequest.setLoginType("formLogin");

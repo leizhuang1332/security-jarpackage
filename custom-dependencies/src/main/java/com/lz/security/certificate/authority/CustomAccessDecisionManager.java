@@ -30,22 +30,15 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
         Object principal = authentication.getPrincipal();
 
-
-        if (principal instanceof String && principal.equals("anonymousUser")) {
-            throw new AccessDeniedException("尚未登录，请登录!");
-        } else if (principal instanceof User) {
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            log.info(" --- 匿名访问 --- ");
+            throw new BadCredentialsException("尚未登录，请登录!");
+        }
+        if (principal instanceof User) {
             log.info("{} --- 具有的权限 --- {}", ((User) principal).getUsername(), authorities);
         }
-
         for (ConfigAttribute configAttribute : configAttributes) {
             String needRole = configAttribute.getAttribute();
-            if ("ROLE_LOGIN".equals(needRole)) {
-                if (authentication instanceof AnonymousAuthenticationToken) {
-                    throw new BadCredentialsException("尚未登录，请登录!");
-                } else {
-                    return;
-                }
-            }
             // 当前用户所具有的权限
             for (GrantedAuthority grantedAuthority : authorities) {
                 // 包含其中一个角色即可访问

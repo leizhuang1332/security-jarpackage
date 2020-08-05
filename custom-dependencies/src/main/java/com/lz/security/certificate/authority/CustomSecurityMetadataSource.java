@@ -30,7 +30,9 @@ public class CustomSecurityMetadataSource implements FilterInvocationSecurityMet
                 return entry.getValue();
             }
         }
-        return SecurityConfig.createList("ROLE_LOGIN");
+//        return SecurityConfig.createList("anonymous");
+        // 未配置权限的路径默认放行
+        return null;
     }
 
     @Override
