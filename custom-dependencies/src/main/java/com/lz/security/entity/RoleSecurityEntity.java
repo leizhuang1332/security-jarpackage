@@ -1,8 +1,8 @@
 package com.lz.security.entity;
 
-import com.lz.security.entity.inteface.RoleEntityInterface;
+import com.lz.security.entity.inteface.RoleSecurityEntityInterface;
 
-public class RoleEntity implements RoleEntityInterface {
+public class RoleSecurityEntity implements RoleSecurityEntityInterface {
 
     private Long id;
     private Long parentId;

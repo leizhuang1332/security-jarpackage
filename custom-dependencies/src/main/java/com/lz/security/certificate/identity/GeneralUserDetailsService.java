@@ -1,7 +1,7 @@
 package com.lz.security.certificate.identity;
 
 import com.lz.security.AuthenticationAdapter;
-import com.lz.security.entity.inteface.RoleEntityInterface;
+import com.lz.security.entity.inteface.RoleSecurityEntityInterface;
 import com.lz.security.entity.inteface.UserSecurityEntityInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +50,8 @@ public class GeneralUserDetailsService implements UserDetailsService {
     private CustomUserDetails buildUserDetails(UserSecurityEntityInterface user, List<GrantedAuthority> grantedAuthorities, String[] credential, String loginType) {
         if (user != null) {
             // 2.获取用户角色
-            List<? extends RoleEntityInterface> roles = AuthenticationAdapter.getInstance().getRoleService().getByUserId(user.getId());
-            log.info("用户角色 --- {}, {}", user.getUsername(), roles.stream().map(RoleEntityInterface::getName).collect(Collectors.toList()));
+            List<? extends RoleSecurityEntityInterface> roles = AuthenticationAdapter.getInstance().getRoleService().getByUserId(user.getId());
+            log.info("用户角色 --- {}, {}", user.getUsername(), roles.stream().map(RoleSecurityEntityInterface::getName).collect(Collectors.toList()));
             // 3.声明用户授权
             roles.forEach(role -> {
                 if (role != null && role.getEnname() != null) {

@@ -1,6 +1,6 @@
 package com.lz.security;
 
-import com.lz.security.entity.inteface.RolePermissionEntityInterface;
+import com.lz.security.entity.inteface.RolePermissionSecurityEntityInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -38,16 +38,16 @@ public class Bootstrapper implements CommandLineRunner {
      */
     public void loadAuthority() {
         // 查询角色权限表
-        List<? extends RolePermissionEntityInterface> all = AuthenticationAdapter.getInstance().getRolePermissionService().getAll();
-        Map<String, List<RolePermissionEntityInterface>> collect = all.stream().collect(Collectors.groupingBy(RolePermissionEntityInterface::getPermissionUrl));
-        for (Map.Entry<String, List<RolePermissionEntityInterface>> entry : collect.entrySet()) {
+        List<? extends RolePermissionSecurityEntityInterface> all = AuthenticationAdapter.getInstance().getRolePermissionService().getAll();
+        Map<String, List<RolePermissionSecurityEntityInterface>> collect = all.stream().collect(Collectors.groupingBy(RolePermissionSecurityEntityInterface::getPermissionUrl));
+        for (Map.Entry<String, List<RolePermissionSecurityEntityInterface>> entry : collect.entrySet()) {
 
             String key = entry.getKey();
-            List<RolePermissionEntityInterface> value = entry.getValue();
+            List<RolePermissionSecurityEntityInterface> value = entry.getValue();
 
             Collection<ConfigAttribute> configAttributes = new ArrayList<>();
-            for (RolePermissionEntityInterface rolePermissionEntityInterface : value) {
-                ConfigAttribute configAttribute = new SecurityConfig(rolePermissionEntityInterface.getRoleEnname());
+            for (RolePermissionSecurityEntityInterface rolePermissionSecurityEntityInterface : value) {
+                ConfigAttribute configAttribute = new SecurityConfig(rolePermissionSecurityEntityInterface.getRoleEnname());
                 configAttributes.add(configAttribute);
             }
             ROLE_AUTHORITY_MAP.put(key, configAttributes);

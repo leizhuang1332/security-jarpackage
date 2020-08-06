@@ -1,7 +1,7 @@
 package com.lz.security;
 
-import com.lz.security.service.inteface.RoleInterface;
-import com.lz.security.service.inteface.RolePermissionInterface;
+import com.lz.security.service.inteface.RoleSecurityInterface;
+import com.lz.security.service.inteface.RolePermissionSecurityInterface;
 import com.lz.security.service.inteface.UserSecurityInterface;
 
 public class AuthenticationAdapter {
@@ -13,14 +13,14 @@ public class AuthenticationAdapter {
     private AuthenticationAdapter() {
     }
 
-    private RolePermissionInterface rolePermissionService;
+    private RolePermissionSecurityInterface rolePermissionService;
 
-    public AuthenticationAdapter rolePermissionService(RolePermissionInterface rolePermissionService) {
+    public AuthenticationAdapter rolePermissionService(RolePermissionSecurityInterface rolePermissionService) {
         this.rolePermissionService = rolePermissionService;
         return this;
     }
 
-    public RolePermissionInterface getRolePermissionService() {
+    public RolePermissionSecurityInterface getRolePermissionService() {
         return this.rolePermissionService;
     }
 
@@ -35,14 +35,14 @@ public class AuthenticationAdapter {
         return this.userService;
     }
 
-    private RoleInterface roleService;
+    private RoleSecurityInterface roleService;
 
-    public AuthenticationAdapter roleService(RoleInterface roleService) {
+    public AuthenticationAdapter roleService(RoleSecurityInterface roleService) {
         this.roleService = roleService;
         return this;
     }
 
-    public RoleInterface getRoleService() {
+    public RoleSecurityInterface getRoleService() {
         return this.roleService;
     }
 

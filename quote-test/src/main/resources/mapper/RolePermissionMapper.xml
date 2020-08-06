@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lz.mapper.RolePermissionMapper">
 
-    <select id="getAll" resultType="com.lz.entity.RolePermissionEntity">
+    <select id="getAll" resultType="com.lz.entity.RolePermissionSecurityEntity">
         SELECT
             r.id AS roleId,
             r.`name` AS roleName,

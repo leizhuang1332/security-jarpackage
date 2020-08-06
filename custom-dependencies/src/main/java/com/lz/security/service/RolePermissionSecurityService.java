@@ -1,7 +1,7 @@
 package com.lz.security.service;
 
-import com.lz.security.entity.RolePermissionEntity;
-import com.lz.security.service.inteface.RolePermissionInterface;
+import com.lz.security.entity.RolePermissionSecurityEntity;
+import com.lz.security.service.inteface.RolePermissionSecurityInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,14 +13,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
-public class RolePermissionService implements RolePermissionInterface {
+public class RolePermissionSecurityService implements RolePermissionSecurityInterface {
 
     @Autowired
     @Qualifier("jdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<RolePermissionEntity> getAll() {
+    public List<RolePermissionSecurityEntity> getAll() {
 
         String sql = "SELECT\n" +
                 "            r.id AS roleId,\n" +
@@ -38,11 +38,11 @@ public class RolePermissionService implements RolePermissionInterface {
         return jdbcTemplate.query(sql, new RolePermissionRowMapper());
     }
 
-    class RolePermissionRowMapper implements RowMapper<RolePermissionEntity> {
+    class RolePermissionRowMapper implements RowMapper<RolePermissionSecurityEntity> {
 
         @Override
-        public RolePermissionEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-            RolePermissionEntity rolePermissionEntity = new RolePermissionEntity();
+        public RolePermissionSecurityEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+            RolePermissionSecurityEntity rolePermissionEntity = new RolePermissionSecurityEntity();
             rolePermissionEntity.setRoleId(rs.getLong("roleId"));
             rolePermissionEntity.setRoleName(rs.getString("roleName"));
             rolePermissionEntity.setRoleEnname(rs.getString("roleEnname"));

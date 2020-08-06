@@ -1,10 +1,10 @@
 package com.lz.entity;
 
-import com.lz.security.entity.inteface.RolePermissionEntityInterface;
+import com.lz.security.entity.inteface.RolePermissionSecurityEntityInterface;
 import lombok.Data;
 
 @Data
-public class RolePermissionEntity implements RolePermissionEntityInterface {
+public class RolePermissionSecurityEntity implements RolePermissionSecurityEntityInterface {
 
     private Long roleId;
     private Long permissionId;

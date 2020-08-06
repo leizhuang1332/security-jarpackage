@@ -1,6 +1,6 @@
 package com.lz.security.entity.inteface;
 
-public interface RolePermissionEntityInterface {
+public interface RolePermissionSecurityEntityInterface {
 
     String getPermissionUrl();
 

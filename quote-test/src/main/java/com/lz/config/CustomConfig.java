@@ -1,8 +1,8 @@
 package com.lz.config;
 
 import com.lz.security.AuthenticationAdapter;
-import com.lz.service.RolePermissionService;
-import com.lz.service.RoleService;
+import com.lz.service.RolePermissionSecurityService;
+import com.lz.service.RoleSecurityService;
 import com.lz.service.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Bean;
 public class CustomConfig {
 
     @Autowired
-    private RolePermissionService rolePermissionService;
+    private RolePermissionSecurityService rolePermissionService;
     @Autowired
     private UserSecurityService userService;
     @Autowired
-    private RoleService roleService;
+    private RoleSecurityService roleService;
 
     @Bean
     public AuthenticationAdapter authenticationDataSource() {

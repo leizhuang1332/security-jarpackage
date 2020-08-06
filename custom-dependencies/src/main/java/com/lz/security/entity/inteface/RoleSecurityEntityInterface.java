@@ -1,6 +1,6 @@
 package com.lz.security.entity.inteface;
 
-public interface RoleEntityInterface {
+public interface RoleSecurityEntityInterface {
 
     String getName();
 

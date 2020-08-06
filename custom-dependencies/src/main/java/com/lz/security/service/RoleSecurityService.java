@@ -1,7 +1,7 @@
 package com.lz.security.service;
 
-import com.lz.security.entity.RoleEntity;
-import com.lz.security.service.inteface.RoleInterface;
+import com.lz.security.entity.RoleSecurityEntity;
+import com.lz.security.service.inteface.RoleSecurityInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,14 +13,14 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Service
-public class RoleService implements RoleInterface {
+public class RoleSecurityService implements RoleSecurityInterface {
 
     @Autowired
     @Qualifier("jdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<RoleEntity> getByUserId(Long userId) {
+    public List<RoleSecurityEntity> getByUserId(Long userId) {
 
         String sql = "SELECT\n" +
                 "          r.*\n" +
@@ -35,11 +35,11 @@ public class RoleService implements RoleInterface {
         return jdbcTemplate.query(sql, new Object[]{userId}, new RoleRowMapper());
     }
 
-    class RoleRowMapper implements RowMapper<RoleEntity> {
+    class RoleRowMapper implements RowMapper<RoleSecurityEntity> {
 
         @Override
-        public RoleEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-            RoleEntity roleEntity = new RoleEntity();
+        public RoleSecurityEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+            RoleSecurityEntity roleEntity = new RoleSecurityEntity();
             roleEntity.setId(rs.getLong("id"));
             roleEntity.setParentId(rs.getLong("parent_id"));
             roleEntity.setName(rs.getString("name"));
