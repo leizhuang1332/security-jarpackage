@@ -1,5 +1,13 @@
 package com.lz.security.certificate.jwt;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -9,6 +17,7 @@ public class RsaUtils {
 
     private static final int DEFAULT_KEY_SIZE = 2048;
 
+    private static Logger log = LoggerFactory.getLogger(RsaUtils.class);
 
     /**
      * 从文件中读取公钥
@@ -66,32 +75,64 @@ public class RsaUtils {
      * @param rsa 秘钥类型
      */
     private static byte[] generateKey(String rsa) throws Exception {
-//        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-//        SecureRandom secureRandom = new SecureRandom("www.youzidata.com".getBytes());
-//        keyPairGenerator.initialize(DEFAULT_KEY_SIZE, secureRandom);
-//        KeyPair keyPair = keyPairGenerator.genKeyPair();
         if (rsa.equals("publicKey")) {
             // 获取公钥
-//            byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
-//            return Base64.getEncoder().encode(publicKeyBytes);
-
-            byte[] publicKeyBytes = ("MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALjN2jPNQCPqFuqLrKyOlBan/r1qXiB2" +
-                    "ugRyZoYSZ0VLcIScdj2PO1hI3Ch2wbzcogdfE77gwoXgOI0VR1F5250CAwEAAQ==").getBytes();
-            return publicKeyBytes;
+            return readFile("/rsa/pub.key");
         } else if (rsa.equals("privateKey")) {
             // 获取私钥
-//            byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
-//            return Base64.getEncoder().encode(privateKeyBytes);
-            byte[] privateKeyBytes = ("MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAuM3aM81AI+oW6ous" +
-                    "rI6UFqf+vWpeIHa6BHJmhhJnRUtwhJx2PY87WEjcKHbBvNyiB18TvuDCheA4jRVH" +
-                    "UXnbnQIDAQABAkARzIG/i30p+FnMrTcsR28r33JBfAUky0qPMxV8xDj+C2P/i2U5" +
-                    "TQSCF2YnV4Rps844MnePPQkS6+rbjJmaX5QBAiEA6jza9InRvJgHY4PayDPkEmGO" +
-                    "kTYWiMkzl83b4/UO6+ECIQDJ+ULF+RWDVGBI/42L0VEkacLkc9aK2qWUcGbtn4iH" +
-                    "PQIgaHqcb1bJ5oUpRooZnBMJN+mr3blyc7DLAnsgCZ3U+gECIQCbYF9nD6zmIFYG" +
-                    "MlrA8iE7IwWkXBzzKytwW1xDd5Q/fQIhAN4gqWlQyK21uHCGVK+iGv5DMjvwlYZ0" +
-                    "9RDdUFzj/Jwi").getBytes();
-            return privateKeyBytes;
+            return readFile("/rsa/pri.key");
         }
         return null;
+    }
+
+    public static byte[] readFile(String fileName) throws IOException {
+        InputStream is = null;
+        ByteArrayOutputStream baos = null;
+        try {
+            is = RsaUtils.class.getResourceAsStream(fileName);
+            baos = new ByteArrayOutputStream();
+            // 设置缓冲区域
+            byte[] buff = new byte[1024];
+            // 记录实际读取的长度
+            int len;
+            // read 将字节流读取到 定义 的 data 中，len 记录每次读取的长度，当 is 的数据读完之后len的值则为-1
+            while ((len = is.read(buff)) > 0) {
+                baos.write(buff, 0, len);
+            }
+            return baos.toByteArray();
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            return null;
+        } finally {
+            if (is != null) {
+                is.close();
+            }
+            if (baos != null) {
+                baos.close();
+            }
+        }
+    }
+
+    public static void generateKey(String publicKeyFilename, String privateKeyFilename, String secret, int keySize) throws Exception {
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        SecureRandom secureRandom = new SecureRandom(secret.getBytes());
+        keyPairGenerator.initialize(Math.max(keySize, DEFAULT_KEY_SIZE), secureRandom);
+        KeyPair keyPair = keyPairGenerator.genKeyPair();
+        // 获取公钥并写出
+        byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
+        publicKeyBytes = Base64.getEncoder().encode(publicKeyBytes);
+        writeFile(publicKeyFilename, publicKeyBytes);
+        // 获取私钥并写出
+        byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
+        privateKeyBytes = Base64.getEncoder().encode(privateKeyBytes);
+        writeFile(privateKeyFilename, privateKeyBytes);
+    }
+
+    private static void writeFile(String destPath, byte[] bytes) throws IOException {
+        File dest = new File(destPath);
+        if (!dest.exists()) {
+            dest.createNewFile();
+        }
+        Files.write(dest.toPath(), bytes);
     }
 }

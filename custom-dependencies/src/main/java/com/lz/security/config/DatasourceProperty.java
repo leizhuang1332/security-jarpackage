@@ -14,7 +14,7 @@ public class DatasourceProperty {
     private String url;
     private String username;
     private String password;
-    private String type;
+//    private String type;
     public static String websiteAppid;
     public static String websiteSecret;
 
@@ -50,13 +50,13 @@ public class DatasourceProperty {
         this.password = password;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+//    public String getType() {
+//        return type;
+//    }
+//
+//    public void setType(String type) {
+//        this.type = type;
+//    }
 
     public String getWebsiteAppid() {
         return websiteAppid;

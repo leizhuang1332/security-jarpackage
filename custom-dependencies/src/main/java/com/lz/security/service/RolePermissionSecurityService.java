@@ -52,19 +52,19 @@ public class RolePermissionSecurityService implements RolePermissionSecurityInte
 //        return jdbcTemplate.query(sql, new RolePermissionRowMapper());
     }
 
-    class RolePermissionRowMapper implements RowMapper<RolePermissionSecurityEntity> {
-
-        @Override
-        public RolePermissionSecurityEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-            RolePermissionSecurityEntity rolePermissionEntity = new RolePermissionSecurityEntity();
-            rolePermissionEntity.setRoleId(rs.getLong("roleId"));
-            rolePermissionEntity.setRoleName(rs.getString("roleName"));
-            rolePermissionEntity.setRoleEnname(rs.getString("roleEnname"));
-            rolePermissionEntity.setPermissionId(rs.getLong("permissionId"));
-            rolePermissionEntity.setPermissionName(rs.getString("permissionName"));
-            rolePermissionEntity.setPermissionEnName(rs.getString("permissionEnName"));
-            rolePermissionEntity.setPermissionUrl(rs.getString("permissionUrl"));
-            return rolePermissionEntity;
-        }
-    }
+//    class RolePermissionRowMapper implements RowMapper<RolePermissionSecurityEntity> {
+//
+//        @Override
+//        public RolePermissionSecurityEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+//            RolePermissionSecurityEntity rolePermissionEntity = new RolePermissionSecurityEntity();
+//            rolePermissionEntity.setRoleId(rs.getLong("roleId"));
+//            rolePermissionEntity.setRoleName(rs.getString("roleName"));
+//            rolePermissionEntity.setRoleEnname(rs.getString("roleEnname"));
+//            rolePermissionEntity.setPermissionId(rs.getLong("permissionId"));
+//            rolePermissionEntity.setPermissionName(rs.getString("permissionName"));
+//            rolePermissionEntity.setPermissionEnName(rs.getString("permissionEnName"));
+//            rolePermissionEntity.setPermissionUrl(rs.getString("permissionUrl"));
+//            return rolePermissionEntity;
+//        }
+//    }
 }

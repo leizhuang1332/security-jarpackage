@@ -45,19 +45,19 @@ public class RoleSecurityService implements RoleSecurityInterface {
 //        return jdbcTemplate.query(sql, new Object[]{userId}, new RoleRowMapper());
     }
 
-    class RoleRowMapper implements RowMapper<RoleSecurityEntity> {
-
-        @Override
-        public RoleSecurityEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
-            RoleSecurityEntity roleEntity = new RoleSecurityEntity();
-            roleEntity.setId(rs.getLong("id"));
-            roleEntity.setParentId(rs.getLong("parent_id"));
-            roleEntity.setName(rs.getString("name"));
-            roleEntity.setEnname(rs.getString("enname"));
-            roleEntity.setDescription(rs.getString("description"));
-            roleEntity.setCreated(rs.getString("created"));
-            roleEntity.setUpdated(rs.getString("updated"));
-            return roleEntity;
-        }
-    }
+//    class RoleRowMapper implements RowMapper<RoleSecurityEntity> {
+//
+//        @Override
+//        public RoleSecurityEntity mapRow(ResultSet rs, int rowNum) throws SQLException {
+//            RoleSecurityEntity roleEntity = new RoleSecurityEntity();
+//            roleEntity.setId(rs.getLong("id"));
+//            roleEntity.setParentId(rs.getLong("parent_id"));
+//            roleEntity.setName(rs.getString("name"));
+//            roleEntity.setEnname(rs.getString("enname"));
+//            roleEntity.setDescription(rs.getString("description"));
+//            roleEntity.setCreated(rs.getString("created"));
+//            roleEntity.setUpdated(rs.getString("updated"));
+//            return roleEntity;
+//        }
+//    }
 }
