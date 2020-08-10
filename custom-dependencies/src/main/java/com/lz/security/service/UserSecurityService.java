@@ -1,8 +1,11 @@
 package com.lz.security.service;
 
+import com.lz.admin.config.MybatisSessionConfig;
+import com.lz.admin.mapper.TbUserMapper;
 import com.lz.security.entity.UserSecurityEntity;
 import com.lz.security.entity.inteface.UserSecurityEntityInterface;
 import com.lz.security.service.inteface.UserSecurityInterface;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,28 +19,39 @@ import java.util.List;
 @Service
 public class UserSecurityService implements UserSecurityInterface {
 
-    @Autowired
-    @Qualifier("jdbcTemplate")
-    private JdbcTemplate jdbcTemplate;
+//    @Autowired
+//    @Qualifier("jdbcTemplate")
+//    private JdbcTemplate jdbcTemplate;
+
+    private TbUserMapper tbUserMapper;
+
+    public UserSecurityService(){
+        SqlSession session = MybatisSessionConfig.getSession();
+        this.tbUserMapper = session.getMapper(TbUserMapper.class);
+    }
 
     @Override
-    public UserSecurityEntity getByUsername(String username) {
+    public UserSecurityEntityInterface getByUsername(String username) {
 
-        String sql = "SELECT * FROM tb_user WHERE username = ? ";
+        return tbUserMapper.getByUsername(username);
 
-        List<UserSecurityEntity> query = jdbcTemplate.query(sql, new Object[]{username}, new UserRowMapper());
-
-        return query.isEmpty() ? null : query.get(0);
+//        String sql = "SELECT * FROM tb_user WHERE username = ? ";
+//
+//        List<UserSecurityEntity> query = jdbcTemplate.query(sql, new Object[]{username}, new UserRowMapper());
+//
+//        return query.isEmpty() ? null : query.get(0);
     }
 
     @Override
     public UserSecurityEntityInterface getByOpenid(String openid) {
-        String sql = "SELECT * FROM tb_user WHERE openid = ? ";
 
+        return tbUserMapper.getByOpenid(openid);
 
-        List<UserSecurityEntity> query = jdbcTemplate.query(sql, new Object[]{openid}, new UserRowMapper());
-
-        return query.isEmpty() ? null : query.get(0);
+//        String sql = "SELECT * FROM tb_user WHERE openid = ? ";
+//
+//        List<UserSecurityEntity> query = jdbcTemplate.query(sql, new Object[]{openid}, new UserRowMapper());
+//
+//        return query.isEmpty() ? null : query.get(0);
     }
 
     class UserRowMapper implements RowMapper<UserSecurityEntity> {

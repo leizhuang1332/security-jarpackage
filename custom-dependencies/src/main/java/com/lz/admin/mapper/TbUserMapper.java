@@ -2,6 +2,8 @@ package com.lz.admin.mapper;
 
 import com.lz.admin.bean.TbUser;
 import com.lz.admin.bean.TbUserExample;
+import com.lz.security.entity.UserSecurityEntity;
+import com.lz.security.entity.inteface.UserSecurityEntityInterface;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -30,4 +32,8 @@ public interface TbUserMapper {
     int updateByPrimaryKeySelective(TbUser record);
 
     int updateByPrimaryKey(TbUser record);
+
+    UserSecurityEntityInterface getByUsername(@Param("username") String username);
+
+    UserSecurityEntityInterface getByOpenid(String openid);
 }

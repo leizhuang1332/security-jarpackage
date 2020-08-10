@@ -176,4 +176,19 @@
       permission_id = #{permissionId,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="getAll" resultType="com.lz.security.entity.RolePermissionSecurityEntity">
+    SELECT
+        r.id AS roleId,
+        r.`name` AS roleName,
+        r.enname AS roleEnname,
+        p.id AS permissionId,
+        p.`name` AS permissionName,
+        p.enname AS permissionEnName,
+        p.url AS permissionUrl
+    FROM
+        tb_role AS r
+        INNER JOIN tb_role_permission AS rp ON r.id = rp.role_id
+        INNER JOIN tb_permission AS p ON p.id = rp.permission_id
+  </select>
 </mapper>

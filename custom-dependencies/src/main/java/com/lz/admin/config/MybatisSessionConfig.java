@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class MybatisSessionConfig {
 
-    static SqlSessionFactory sqlSessionFactory = null;
+    private static SqlSessionFactory sqlSessionFactory = null;
     static{
         SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
         try {

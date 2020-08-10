@@ -4,7 +4,6 @@ import com.lz.security.entity.inteface.RolePermissionSecurityEntityInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.access.SecurityConfig;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
  * 加载需要的初始化数据
  */
 @Component
-@Order(100)
 public class Bootstrapper implements CommandLineRunner {
 
     private Logger log = LoggerFactory.getLogger(Bootstrapper.class);

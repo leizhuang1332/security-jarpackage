@@ -2,6 +2,7 @@ package com.lz.service;
 
 import com.lz.entity.UserSecurityEntity;
 import com.lz.mapper.UserMapper;
+import com.lz.security.entity.inteface.UserSecurityEntityInterface;
 import com.lz.security.service.inteface.UserSecurityInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,5 +16,10 @@ public class UserSecurityService implements UserSecurityInterface {
     @Override
     public UserSecurityEntity getByUsername(String username) {
         return userMapper.getByUsername(username);
+    }
+
+    @Override
+    public UserSecurityEntityInterface getByOpenid(String openid) {
+        return null;
     }
 }

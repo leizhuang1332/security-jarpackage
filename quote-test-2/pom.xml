@@ -63,8 +63,10 @@
             <artifactId>authentication-plugin</artifactId>
             <version>1.0.0.RELEASE</version>
             <scope>system</scope>
-            <!--<systemPath>${pom.basedir}/lib/authentication-plugin-1.0.0.RELEASE.jar</systemPath>-->
-            <systemPath>C:/Workspace/security-jarpackage/security-jarpackage/custom-dependencies/target/authentication-plugin-1.0.0.RELEASE.jar</systemPath>
+            <systemPath>${pom.basedir}/lib/authentication-plugin-1.0.0.RELEASE.jar</systemPath>
+            <!--<systemPath>C:/Workspace/security-jarpackage/security-jarpackage/custom-dependencies/target/authentication-plugin-1.0.0.RELEASE.jar</systemPath>-->
+            <!--<systemPath>D:/Workerspace/IdeaProjects/custom-jar-packages/custom-dependencies/target/authentication-plugin-1.0.0.RELEASE.jar</systemPath>-->
+            <!--<systemPath>D:/Workerspace/GitOther/authentication-plugin/target/authentication-plugin-1.0.0.RELEASE.jar</systemPath>-->
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>

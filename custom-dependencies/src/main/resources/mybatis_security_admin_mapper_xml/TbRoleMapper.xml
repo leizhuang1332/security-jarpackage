@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lz.admin.mapper.TbUserMapper">
-  <resultMap id="BaseResultMap" type="com.lz.admin.bean.TbUser">
+<mapper namespace="com.lz.admin.mapper.TbRoleMapper">
+  <resultMap id="BaseResultMap" type="com.lz.admin.bean.TbRole">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="username" jdbcType="VARCHAR" property="username" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="enname" jdbcType="VARCHAR" property="enname" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="created" jdbcType="VARCHAR" property="created" />
     <result column="updated" jdbcType="VARCHAR" property="updated" />
   </resultMap>
@@ -69,15 +69,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, username, password, phone, email, created, updated
+    id, parent_id, name, enname, description, created, updated
   </sql>
-  <select id="selectByExample" parameterType="com.lz.admin.bean.TbUserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.lz.admin.bean.TbRoleExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from tb_user
+    from tb_role
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -88,47 +88,47 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from tb_user
+    from tb_role
     where id = #{id,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from tb_user
+    delete from tb_role
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.lz.admin.bean.TbUserExample">
-    delete from tb_user
+  <delete id="deleteByExample" parameterType="com.lz.admin.bean.TbRoleExample">
+    delete from tb_role
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.lz.admin.bean.TbUser">
+  <insert id="insert" parameterType="com.lz.admin.bean.TbRole">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_user (username, password, phone, 
-      email, created, updated
+    insert into tb_role (parent_id, name, enname, 
+      description, created, updated
       )
-    values (#{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{email,jdbcType=VARCHAR}, #{created,jdbcType=VARCHAR}, #{updated,jdbcType=VARCHAR}
+    values (#{parentId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{enname,jdbcType=VARCHAR}, 
+      #{description,jdbcType=VARCHAR}, #{created,jdbcType=VARCHAR}, #{updated,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.lz.admin.bean.TbUser">
+  <insert id="insertSelective" parameterType="com.lz.admin.bean.TbRole">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into tb_user
+    insert into tb_role
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="username != null">
-        username,
+      <if test="parentId != null">
+        parent_id,
       </if>
-      <if test="password != null">
-        password,
+      <if test="name != null">
+        name,
       </if>
-      <if test="phone != null">
-        phone,
+      <if test="enname != null">
+        enname,
       </if>
-      <if test="email != null">
-        email,
+      <if test="description != null">
+        description,
       </if>
       <if test="created != null">
         created,
@@ -138,17 +138,17 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="username != null">
-        #{username,jdbcType=VARCHAR},
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
       </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
-        #{phone,jdbcType=VARCHAR},
+      <if test="enname != null">
+        #{enname,jdbcType=VARCHAR},
       </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
       </if>
       <if test="created != null">
         #{created,jdbcType=VARCHAR},
@@ -158,29 +158,37 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.lz.admin.bean.TbUserExample" resultType="java.lang.Long">
-    select count(*) from tb_user
+  <select id="countByExample" parameterType="com.lz.admin.bean.TbRoleExample" resultType="java.lang.Long">
+    select count(*) from tb_role
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+  <select id="listByUserId" resultType="com.lz.admin.bean.TbRole">
+    select r.id,r.parent_id, r.name, r.enname, r.description, r.created, r.updated
+    from tb_role r
+    left join  tb_user_role ur on ur.role_id=r.id
+    left join  tb_user u on u.id = ur.user_id
+    WHERE u.id=#{userId}
+    order by r.id
+  </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update tb_user
+    update tb_role
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=BIGINT},
       </if>
-      <if test="record.username != null">
-        username = #{record.username,jdbcType=VARCHAR},
+      <if test="record.parentId != null">
+        parent_id = #{record.parentId,jdbcType=BIGINT},
       </if>
-      <if test="record.password != null">
-        password = #{record.password,jdbcType=VARCHAR},
+      <if test="record.name != null">
+        name = #{record.name,jdbcType=VARCHAR},
       </if>
-      <if test="record.phone != null">
-        phone = #{record.phone,jdbcType=VARCHAR},
+      <if test="record.enname != null">
+        enname = #{record.enname,jdbcType=VARCHAR},
       </if>
-      <if test="record.email != null">
-        email = #{record.email,jdbcType=VARCHAR},
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
       </if>
       <if test="record.created != null">
         created = #{record.created,jdbcType=VARCHAR},
@@ -194,32 +202,32 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update tb_user
+    update tb_role
     set id = #{record.id,jdbcType=BIGINT},
-      username = #{record.username,jdbcType=VARCHAR},
-      password = #{record.password,jdbcType=VARCHAR},
-      phone = #{record.phone,jdbcType=VARCHAR},
-      email = #{record.email,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      enname = #{record.enname,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
       created = #{record.created,jdbcType=VARCHAR},
       updated = #{record.updated,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.lz.admin.bean.TbUser">
-    update tb_user
+  <update id="updateByPrimaryKeySelective" parameterType="com.lz.admin.bean.TbRole">
+    update tb_role
     <set>
-      <if test="username != null">
-        username = #{username,jdbcType=VARCHAR},
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
       </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=VARCHAR},
+      <if test="enname != null">
+        enname = #{enname,jdbcType=VARCHAR},
       </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
       </if>
       <if test="created != null">
         created = #{created,jdbcType=VARCHAR},
@@ -230,14 +238,26 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.lz.admin.bean.TbUser">
-    update tb_user
-    set username = #{username,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      phone = #{phone,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.lz.admin.bean.TbRole">
+    update tb_role
+    set parent_id = #{parentId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      enname = #{enname,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
       created = #{created,jdbcType=VARCHAR},
       updated = #{updated,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="getByUserId" parameterType="java.lang.Long" resultType="com.lz.security.entity.RoleSecurityEntity">
+    SELECT
+      r.*
+    FROM
+      tb_user AS u
+      LEFT JOIN tb_user_role AS ur
+        ON u.id = ur.user_id
+      LEFT JOIN tb_role AS r
+        ON r.id = ur.role_id
+    WHERE u.id = #{userId}
+  </select>
 </mapper>

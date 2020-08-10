@@ -8,6 +8,7 @@ import com.lz.security.certificate.jwt.RsaUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,12 +29,16 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         response.setContentType("application/json;charset=utf-8");
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         String token = null;
+        JwtSubject jwtSubject = null;
         try {
 
-            JwtSubject jwtSubject = new JwtSubject();
+            jwtSubject = new JwtSubject();
             jwtSubject.setLoginType(userDetails.getLoginType());
             jwtSubject.setCredentials(userDetails.getUsername());
-            userDetails.getAuthorities().forEach(grantedAuthority -> jwtSubject.getRoles().add(grantedAuthority.getAuthority()));
+            Collection<GrantedAuthority> authorities = userDetails.getAuthorities();
+            for (GrantedAuthority grantedAuthority : authorities){
+                jwtSubject.getRoles().add(grantedAuthority.getAuthority());
+            }
 
             token = JwtUtils.generateTokenExpireInMinutes(jwtSubject, RsaUtils.getPrivateKey(), 60 * 24 * 7);
         } catch (Exception e) {
@@ -43,7 +49,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         Map<String, Object> map = new HashMap<>();
         map.put("code", HttpServletResponse.SC_OK);
         map.put("msg", "登录成功!");
-        map.put("data", authentication.getPrincipal());
+        map.put("data", jwtSubject);
         out.write(new ObjectMapper().writeValueAsString(map));
         out.flush();
         out.close();

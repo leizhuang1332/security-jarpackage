@@ -6,6 +6,7 @@ import com.lz.security.entity.inteface.UserSecurityEntityInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -64,6 +65,8 @@ public class GeneralUserDetailsService implements UserDetailsService {
             userDetails.setLoginType(credential[0]);
             return userDetails;
         }
+        if (loginType.equals("formLogin"))
+            throw new BadCredentialsException("User [" + credential[1] + "] Not found! ");
         throw new UsernameNotFoundException("User [" + credential[1] + "] No roles are bound, please contact your administrator! ");
     }
 }

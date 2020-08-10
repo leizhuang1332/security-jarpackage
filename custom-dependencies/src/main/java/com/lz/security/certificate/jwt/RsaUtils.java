@@ -66,18 +66,31 @@ public class RsaUtils {
      * @param rsa 秘钥类型
      */
     private static byte[] generateKey(String rsa) throws Exception {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        SecureRandom secureRandom = new SecureRandom("www.youzidata.com".getBytes());
-        keyPairGenerator.initialize(DEFAULT_KEY_SIZE, secureRandom);
-        KeyPair keyPair = keyPairGenerator.genKeyPair();
+//        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+//        SecureRandom secureRandom = new SecureRandom("www.youzidata.com".getBytes());
+//        keyPairGenerator.initialize(DEFAULT_KEY_SIZE, secureRandom);
+//        KeyPair keyPair = keyPairGenerator.genKeyPair();
         if (rsa.equals("publicKey")) {
             // 获取公钥
-            byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
-            return Base64.getEncoder().encode(publicKeyBytes);
+//            byte[] publicKeyBytes = keyPair.getPublic().getEncoded();
+//            return Base64.getEncoder().encode(publicKeyBytes);
+
+            byte[] publicKeyBytes = ("MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBALjN2jPNQCPqFuqLrKyOlBan/r1qXiB2" +
+                    "ugRyZoYSZ0VLcIScdj2PO1hI3Ch2wbzcogdfE77gwoXgOI0VR1F5250CAwEAAQ==").getBytes();
+            return publicKeyBytes;
         } else if (rsa.equals("privateKey")) {
             // 获取私钥
-            byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
-            return Base64.getEncoder().encode(privateKeyBytes);
+//            byte[] privateKeyBytes = keyPair.getPrivate().getEncoded();
+//            return Base64.getEncoder().encode(privateKeyBytes);
+            byte[] privateKeyBytes = ("MIIBVQIBADANBgkqhkiG9w0BAQEFAASCAT8wggE7AgEAAkEAuM3aM81AI+oW6ous" +
+                    "rI6UFqf+vWpeIHa6BHJmhhJnRUtwhJx2PY87WEjcKHbBvNyiB18TvuDCheA4jRVH" +
+                    "UXnbnQIDAQABAkARzIG/i30p+FnMrTcsR28r33JBfAUky0qPMxV8xDj+C2P/i2U5" +
+                    "TQSCF2YnV4Rps844MnePPQkS6+rbjJmaX5QBAiEA6jza9InRvJgHY4PayDPkEmGO" +
+                    "kTYWiMkzl83b4/UO6+ECIQDJ+ULF+RWDVGBI/42L0VEkacLkc9aK2qWUcGbtn4iH" +
+                    "PQIgaHqcb1bJ5oUpRooZnBMJN+mr3blyc7DLAnsgCZ3U+gECIQCbYF9nD6zmIFYG" +
+                    "MlrA8iE7IwWkXBzzKytwW1xDd5Q/fQIhAN4gqWlQyK21uHCGVK+iGv5DMjvwlYZ0" +
+                    "9RDdUFzj/Jwi").getBytes();
+            return privateKeyBytes;
         }
         return null;
     }

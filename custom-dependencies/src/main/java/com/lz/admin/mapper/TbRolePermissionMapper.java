@@ -2,6 +2,7 @@ package com.lz.admin.mapper;
 
 import com.lz.admin.bean.TbRolePermission;
 import com.lz.admin.bean.TbRolePermissionExample;
+import com.lz.security.entity.inteface.RolePermissionSecurityEntityInterface;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -30,4 +31,6 @@ public interface TbRolePermissionMapper {
     int updateByPrimaryKeySelective(TbRolePermission record);
 
     int updateByPrimaryKey(TbRolePermission record);
+
+    List<RolePermissionSecurityEntityInterface> getAll();
 }

@@ -2,6 +2,7 @@ package com.lz.admin.mapper;
 
 import com.lz.admin.bean.TbRole;
 import com.lz.admin.bean.TbRoleExample;
+import com.lz.security.entity.inteface.RoleSecurityEntityInterface;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -32,4 +33,6 @@ public interface TbRoleMapper {
     int updateByPrimaryKey(TbRole record);
 
     List<TbRole> listByUserId(long userId);
+
+    List<RoleSecurityEntityInterface> getByUserId(@Param("userId") Long userId);
 }

@@ -1,10 +1,11 @@
 package com.lz.security.service;
 
+import com.lz.admin.config.MybatisSessionConfig;
+import com.lz.admin.mapper.TbRoleMapper;
 import com.lz.security.entity.RoleSecurityEntity;
+import com.lz.security.entity.inteface.RoleSecurityEntityInterface;
 import com.lz.security.service.inteface.RoleSecurityInterface;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
@@ -15,24 +16,33 @@ import java.util.List;
 @Service
 public class RoleSecurityService implements RoleSecurityInterface {
 
-    @Autowired
-    @Qualifier("jdbcTemplate")
-    private JdbcTemplate jdbcTemplate;
+//    @Autowired
+//    @Qualifier("jdbcTemplate")
+//    private JdbcTemplate jdbcTemplate;
+
+    private TbRoleMapper tbRoleMapper;
+
+    public RoleSecurityService() {
+        SqlSession session = MybatisSessionConfig.getSession();
+        this.tbRoleMapper = session.getMapper(TbRoleMapper.class);
+    }
 
     @Override
-    public List<RoleSecurityEntity> getByUserId(Long userId) {
+    public List<RoleSecurityEntityInterface> getByUserId(Long userId) {
 
-        String sql = "SELECT\n" +
-                "          r.*\n" +
-                "        FROM\n" +
-                "          tb_user AS u\n" +
-                "          LEFT JOIN tb_user_role AS ur\n" +
-                "            ON u.id = ur.user_id\n" +
-                "          LEFT JOIN tb_role AS r\n" +
-                "            ON r.id = ur.role_id\n" +
-                "        WHERE u.id = ? ";
+        return tbRoleMapper.getByUserId(userId);
 
-        return jdbcTemplate.query(sql, new Object[]{userId}, new RoleRowMapper());
+//        String sql = "SELECT\n" +
+//                "          r.*\n" +
+//                "        FROM\n" +
+//                "          tb_user AS u\n" +
+//                "          LEFT JOIN tb_user_role AS ur\n" +
+//                "            ON u.id = ur.user_id\n" +
+//                "          LEFT JOIN tb_role AS r\n" +
+//                "            ON r.id = ur.role_id\n" +
+//                "        WHERE u.id = ? ";
+//
+//        return jdbcTemplate.query(sql, new Object[]{userId}, new RoleRowMapper());
     }
 
     class RoleRowMapper implements RowMapper<RoleSecurityEntity> {

@@ -7,12 +7,6 @@
     <!--引入数据源-->
     <properties resource="security.properties"/>
 
-    <!--<property name="driver" value="${security.datasource.driver-class-name}" />-->
-    <!--<property name="url" value="${security.datasource.url}" />-->
-    <!--<property name="username" value="${security.datasource.username}" />-->
-    <!--<property name="password" value="${security.datasource.password}" />-->
-    <!--<property name="type" value="${security.datasource.type}" />-->
-
     <settings>
         <!-- 打印查询语句 -->
         <setting name="logImpl" value="STDOUT_LOGGING" />
@@ -24,26 +18,22 @@
             <!-- 使用jdbc事务管理，目前由mybatis来管理 -->
             <transactionManager type="JDBC" />
             <!-- 数据库连接池，目前由mybatis来管理 -->
-            <dataSource type="POOLED"><!--有关于mysql数据库的各种信息-->
+            <dataSource type="POOLED">
+                <!--有关于mysql数据库的各种信息-->
                 <property name="driver" value="${security.datasource.driver-class-name}" />
                 <property name="url" value="${security.datasource.url}" />
                 <property name="username" value="${security.datasource.username}" />
                 <property name="password" value="${security.datasource.password}" />
-
-                <!--<property name="driver" value="${driver}" />-->
-                <!--<property name="url" value="${url}" />-->
-                <!--<property name="username" value="${username}" />-->
-                <!--<property name="password" value="${password}" />-->
             </dataSource>
         </environment>
     </environments>
 
     <mappers>
         <!--将操作配置文件User.xml系添加进mapper-->
-        <mapper resource="mybatis/TbPermissionMapper.xml" />
-        <mapper resource="mybatis/TbRoleMapper.xml" />
-        <mapper resource="mybatis/TbRolePermissionMapper.xml" />
-        <mapper resource="mybatis/TbUserMapper.xml" />
-        <mapper resource="mybatis/TbUserRoleMapper.xml" />
+        <mapper resource="mybatis_security_admin_mapper_xml/TbPermissionMapper.xml" />
+        <mapper resource="mybatis_security_admin_mapper_xml/TbRoleMapper.xml" />
+        <mapper resource="mybatis_security_admin_mapper_xml/TbRolePermissionMapper.xml" />
+        <mapper resource="mybatis_security_admin_mapper_xml/TbUserMapper.xml" />
+        <mapper resource="mybatis_security_admin_mapper_xml/TbUserRoleMapper.xml" />
     </mappers>
 </configuration>
