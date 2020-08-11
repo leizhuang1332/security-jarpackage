@@ -244,4 +244,8 @@
   <select id="getByUsername" parameterType="java.lang.String" resultType="com.lz.security.entity.UserSecurityEntity">
     SELECT * FROM tb_user WHERE username = #{username}
   </select>
+
+  <select id="getByOpenid" parameterType="java.lang.String" resultType="com.lz.security.entity.UserSecurityEntity">
+
+  </select>
 </mapper>

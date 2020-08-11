@@ -35,6 +35,7 @@ public class Bootstrapper implements CommandLineRunner {
      * 加载授权
      */
     public void loadAuthority() {
+        ROLE_AUTHORITY_MAP.clear();
         // 查询角色权限表
         List<? extends RolePermissionSecurityEntityInterface> all = AuthenticationAdapter.getInstance().getRolePermissionService().getAll();
         Map<String, List<RolePermissionSecurityEntityInterface>> collect = all.stream().collect(Collectors.groupingBy(RolePermissionSecurityEntityInterface::getPermissionUrl));
